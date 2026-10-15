@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Churn Intelligence Platform | ML Model Evaluation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+          <path d="M2 12h20"></path>
+        </svg>
+      </div>
+      <div>
+        <h1>Telco Churn AI <span class="badge-tag">Supervised ML Studio</span></h1>
+        <p class="subtitle">5,000 Accounts · 4 Supervised Classifiers · 97.6% Benchmark Accuracy</p>
+      </div>
+    </div>
+    
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-tab="simulator">
+        <span class="tab-icon">⚡</span> Churn Predictor
+      </button>
+      <button class="nav-tab" data-tab="benchmarks">
+        <span class="tab-icon">📊</span> Model Benchmarks
+      </button>
+      <button class="nav-tab" data-tab="visualizations">
+        <span class="tab-icon">📈</span> Evaluation Charts
+      </button>
+      <button class="nav-tab" data-tab="dataset">
+        <span class="tab-icon">🗃️</span> Data Explorer
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-content">
+    
+    <!-- Quick KPI Cards Bar -->
+    <section class="kpi-banner">
+      <div class="kpi-card highlight">
+        <div class="kpi-header">
+          <span class="kpi-label">Top Performer</span>
+          <span class="kpi-badge">Champion</span>
+        </div>
+        <div class="kpi-value">Random Forest</div>
+        <div class="kpi-caption">97.6% Test Accuracy · 90.8% F1</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Precision Rate</span>
+          <span class="trend-up">98.35%</span>
+        </div>
+        <div class="kpi-value">Minimal FP</div>
+        <div class="kpi-caption">Only 2 false alarms in 1,000 customers</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">ROC-AUC Score</span>
+          <span class="trend-up">0.9267</span>
+        </div>
+        <div class="kpi-value">Elite Discrimination</div>
+        <div class="kpi-caption">Baseline random chance is 0.5000</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Max Recall Model</span>
+          <span class="trend-up">85.82%</span>
+        </div>
+        <div class="kpi-value">Gradient Boosting</div>
+        <div class="kpi-caption">Catches 121 of 141 churners</div>
+      </div>
+    </section>
+
+    <!-- TAB 1: INTERACTIVE CHURN PREDICTOR -->
+    <section id="tab-simulator" class="tab-pane active">
+      <div class="pane-grid">
+        <!-- Input Form Card -->
+        <div class="card form-card">
+          <div class="card-header">
+            <div>
+              <h2>Customer Profile & Usage Parameters</h2>
+              <p class="card-desc">Enter customer telecommunication metrics to simulate live ML model inference.</p>
+            </div>
+            <div class="preset-buttons">
+              <button type="button" class="btn-sm" id="btn-preset-safe">Safe Customer</button>
+              <button type="button" class="btn-sm btn-danger-sm" id="btn-preset-churn">High Risk Customer</button>
+            </div>
+          </div>
+
+          <form id="churn-form">
+            <div class="form-grid">
+              
+              <div class="form-group full-width">
+                <label for="model-select">Classification Algorithm</label>
+                <select id="model-select" class="form-control">
+                  <option value="Random Forest" selected>Random Forest Classifier (Champion - 97.6% Accuracy, 98.4% Precision)</option>
+                  <option value="Gradient Boosting">Gradient Boosting Classifier (High Recall - 85.8% Recall)</option>
+                  <option value="Logistic Regression">Logistic Regression (L2 Regularized Baseline - Cost Sensitive)</option>
+                </select>
+              </div>
+
+              <!-- Customer Service Calls (Crucial Feature) -->
+              <div class="form-group highlight-input">
+                <label for="input-cust-service">
+                  Customer Service Calls <span class="badge-alert">Critical Driver</span>
+                </label>
+                <div class="slider-wrapper">
+                  <input type="range" id="input-cust-service" min="0" max="9" value="1" class="form-range">
+                  <span class="range-value" id="val-cust-service">1</span>
+                </div>
+                <small class="helper-text">&ge; 4 calls causes churn risk to exceed 50%</small>
+              </div>
+
+              <!-- International Plan -->
+              <div class="form-group highlight-input">
+                <label for="input-intl-plan">
+                  International Plan <span class="badge-alert">Critical Driver</span>
+                </label>
+                <select id="input-intl-plan" class="form-control">
+                  <option value="0">No International Plan</option>
+                  <option value="1">Subscribed to International Plan (3.5x Risk)</option>
+                </select>
+                <small class="helper-text">Overseas callers exhibit higher price sensitivity</small>
+              </div>
+
+              <!-- Account Tenure -->
+              <div class="form-group">
+                <label for="input-account-length">Account Length (Months)</label>
+                <input type="number" id="input-account-length" class="form-control" value="101" min="1" max="250">
+              </div>
+
+              <!-- Voice Mail Plan -->
+              <div class="form-group">
+                <label for="input-vmail-plan">Voice Mail Plan</label>
+                <select id="input-vmail-plan" class="form-control">
+                  <option value="0">No Voice Mail</option>
+                  <option value="1">Active Voice Mail</option>
+                </select>
+              </div>
+
+              <!-- Day Minutes -->
+              <div class="form-group">
+                <label for="input-day-mins">Day Minutes</label>
+                <input type="number" id="input-day-mins" class="form-control" value="179.8" step="0.1">
+              </div>
+
+              <!-- Day Calls -->
+              <div class="form-group">
+                <label for="input-day-calls">Day Calls</label>
+                <input type="number" id="input-day-calls" class="form-control" value="100" min="0">
+              </div>
+
+              <!-- Evening Minutes -->
+              <div class="form-group">
+                <label for="input-eve-mins">Evening Minutes</label>
+                <input type="number" id="input-eve-mins" class="form-control" value="200.9" step="0.1">
+              </div>
+
+              <!-- Night Minutes -->
+              <div class="form-group">
+                <label for="input-night-mins">Night Minutes</label>
+                <input type="number" id="input-night-mins" class="form-control" value="200.9" step="0.1">
+              </div>
+
+              <!-- International Minutes -->
+              <div class="form-group">
+                <label for="input-intl-mins">International Minutes</label>
+                <input type="number" id="input-intl-mins" class="form-control" value="10.2" step="0.1">
+              </div>
+
+              <!-- Area Code -->
+              <div class="form-group">
+                <label for="input-area-code">Area Code</label>
+                <select id="input-area-code" class="form-control">
+                  <option value="415">Area 415</option>
+                  <option value="408">Area 408</option>
+                  <option value="510">Area 510</option>
+                </select>
+              </div>
+
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="btn-predict">
+                <span class="btn-icon">⚡</span> Run Supervised Model Prediction
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Prediction Result Output Card -->
+        <div class="card result-card">
+          <div class="card-header">
+            <h2>Real-Time Prediction Output</h2>
+            <span class="status-indicator live">Inference Engine Active</span>
+          </div>
+
+          <div class="result-body" id="result-display">
+            <div class="probability-container">
+              <div class="gauge-ring" id="gauge-circle">
+                <div class="gauge-inner">
+                  <span class="prob-number" id="prob-val">12%</span>
+                  <span class="prob-label">Churn Probability</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="verdict-banner safe" id="verdict-box">
+              <h3 id="verdict-title">LOW ATTRITION RISK</h3>
+              <p id="verdict-desc">Customer demonstrates stable usage habits and low likelihood of cancellation.</p>
+            </div>
+
+            <div class="breakdown-section">
+              <h4>Key Contributing Risk Factors:</h4>
+              <ul class="factors-list" id="factors-list">
+                <li><span class="factor-icon good">✓</span> Low customer service complaints (1 call)</li>
+                <li><span class="factor-icon good">✓</span> Standard daytime call volume</li>
+                <li><span class="factor-icon info">ℹ</span> No active international plan</li>
+              </ul>
+            </div>
+
+            <div class="action-card">
+              <h4>Recommended Action:</h4>
+              <p id="action-text">Standard loyalty engagement. No aggressive retention discount required.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: MODEL BENCHMARKS -->
+    <section id="tab-benchmarks" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>Supervised Model Benchmark Comparison</h2>
+            <p class="card-desc">Evaluated on 5-Fold Stratified Cross-Validation (N=4,000) and Held-Out Test Set (N=1,000).</p>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="benchmark-table">
+            <thead>
+              <tr>
+                <th>Algorithm</th>
+                <th>Model Architecture</th>
+                <th>Test Accuracy</th>
+                <th>Precision (Churn)</th>
+                <th>Recall (Churn)</th>
+                <th>F1-Score</th>
+                <th>ROC-AUC</th>
+                <th>PR-AUC</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="metrics-table-body">
+              <tr class="champion-row">
+                <td><strong>Random Forest</strong></td>
+                <td>Bagging (150 trees, balanced)</td>
+                <td><span class="score-pill good">97.60%</span></td>
+                <td><span class="score-pill good">98.35%</span></td>
+                <td><span class="score-pill">84.40%</span></td>
+                <td><span class="score-pill good">90.84%</span></td>
+                <td><span class="score-pill good">0.9267</span></td>
+                <td><span class="score-pill good">0.8997</span></td>
+                <td><span class="badge-winner">Recommended</span></td>
+              </tr>
+              <tr>
+                <td><strong>Gradient Boosting</strong></td>
+                <td>Sequential Boosting (150 trees)</td>
+                <td><span class="score-pill good">97.40%</span></td>
+                <td><span class="score-pill good">95.28%</span></td>
+                <td><span class="score-pill good">85.82%</span></td>
+                <td><span class="score-pill good">90.30%</span></td>
+                <td><span class="score-pill good">0.9255</span></td>
+                <td><span class="score-pill good">0.8982</span></td>
+                <td><span class="badge-runner">High Recall</span></td>
+              </tr>
+              <tr>
+                <td><strong>Support Vector Machine (SVC)</strong></td>
+                <td>RBF Kernel (Balanced weights)</td>
+                <td><span class="score-pill">90.80%</span></td>
+                <td><span class="score-pill">64.85%</span></td>
+                <td><span class="score-pill">75.89%</span></td>
+                <td><span class="score-pill">69.93%</span></td>
+                <td><span class="score-pill">0.9064</span></td>
+                <td><span class="score-pill">0.7890</span></td>
+                <td><span class="badge-alt">Viable</span></td>
+              </tr>
+              <tr>
+                <td><strong>Logistic Regression</strong></td>
+                <td>Linear L2 Regularized Baseline</td>
+                <td><span class="score-pill alert">78.60%</span></td>
+                <td><span class="score-pill alert">37.28%</span></td>
+                <td><span class="score-pill">75.89%</span></td>
+                <td><span class="score-pill alert">50.00%</span></td>
+                <td><span class="score-pill">0.8346</span></td>
+                <td><span class="score-pill alert">0.4916</span></td>
+                <td><span class="badge-baseline">Baseline</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="metrics-notes-grid">
+          <div class="note-box">
+            <h4>💡 Why Random Forest Wins</h4>
+            <p>With <strong>98.35% precision</strong>, Random Forest produced only 2 false positive alerts across 859 retained subscribers, preventing unnecessary promotional discounts from being awarded to safe customers.</p>
+          </div>
+          <div class="note-box">
+            <h4>⚡ High Recall Alternative</h4>
+            <p>Gradient Boosting captured <strong>121 out of 141 churners (85.82% recall)</strong>. In business scenarios where the loss of a client is catastrophic, this model offers the strongest protective barrier.</p>
+          </div>
+          <div class="note-box">
+            <h4>📉 Why Logistic Regression Struggles</h4>
+            <p>Complex non-linear interactions (e.g. high customer service calls combined with daytime usage spikes) cannot be separated linearly, causing 180 false alarms.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: VISUALIZATIONS -->
+    <section id="tab-visualizations" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>Generated Diagnostic Plots & Analytics Suite</h2>
+            <p class="card-desc">Click any plot to inspect in high resolution. All charts generated directly from test and validation runs.</p>
+          </div>
+        </div>
+
+        <div class="charts-gallery">
+          
+          <div class="chart-card">
+            <div class="chart-img-wrap">
+              <img src="/figures/04_roc_curves.png" alt="ROC Curves Comparison" class="lightbox-trigger">
+            </div>
+            <div class="chart-info">
+              <h3>ROC Curves Comparison</h3>
+              <p>Random Forest (0.9267) & Gradient Boosting (0.9255) demonstrate top discriminatory capability.</p>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-img-wrap">
+              <img src="/figures/05_pr_curves.png" alt="Precision-Recall Curves" class="lightbox-trigger">
+            </div>
+            <div class="chart-info">
+              <h3>Precision-Recall Curves</h3>
+              <p>Critical for class-imbalanced data. Both tree ensembles achieve ~0.90 Average Precision.</p>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-img-wrap">
+              <img src="/figures/06_confusion_matrices.png" alt="Confusion Matrices" class="lightbox-trigger">
+            </div>
+            <div class="chart-info">
+              <h3>Confusion Matrices (Test Set)</h3>
+              <p>Detailed view of True Positives, False Positives, False Negatives, and True Negatives.</p>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-img-wrap">
+              <img src="/figures/08_feature_importance.png" alt="Feature Importance" class="lightbox-trigger">
+            </div>
+            <div class="chart-info">
+              <h3>Feature Importance (Gini & Tree Gain)</h3>
+              <p>Total charge, daytime minutes, and customer service calls dominate churn influence.</p>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-img-wrap">
+              <img src="/figures/07_metrics_comparison_bar.png" alt="Metrics Comparison Bar Chart" class="lightbox-trigger">
+            </div>
+            <div class="chart-info">
+              <h3>Metrics Comparison Bar Chart</h3>
+              <p>Multi-metric comparative perspective across Accuracy, Precision, Recall, F1, and ROC-AUC.</p>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-img-wrap">
+              <img src="/figures/01_target_distribution.png" alt="Target Distribution" class="lightbox-trigger">
+            </div>
+            <div class="chart-info">
+              <h3>Target Churn Distribution</h3>
+              <p>14.14% empirical churn rate illustrating the natural class imbalance of the dataset.</p>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-img-wrap">
+              <img src="/figures/02_key_feature_relationships.png" alt="Key Feature Relationships" class="lightbox-trigger">
+            </div>
+            <div class="chart-info">
+              <h3>Key Feature Drivers</h3>
+              <p>Direct churn probability surges at 4+ customer service calls and for international plan users.</p>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-img-wrap">
+              <img src="/figures/03_correlation_heatmap.png" alt="Correlation Heatmap" class="lightbox-trigger">
+            </div>
+            <div class="chart-info">
+              <h3>Numeric Correlation Matrix</h3>
+              <p>Pearson correlations between minutes, charges, and call frequency dimensions.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: DATASET EXPLORER -->
+    <section id="tab-dataset" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>Telco Customer Churn Dataset (Sample Records)</h2>
+            <p class="card-desc">Showing preview of the 5,000 subscriber accounts with engineered attributes.</p>
+          </div>
+          <div>
+            <a href="/data/churn_data.csv" download class="btn-sm">Download CSV Data</a>
+          </div>
+        </div>
+
+        <div class="table-container scrollable">
+          <table class="benchmark-table" id="dataset-sample-table">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Tenure</th>
+                <th>Area Code</th>
+                <th>Intl Plan</th>
+                <th>V-Mail</th>
+                <th>Day Mins</th>
+                <th>Day Calls</th>
+                <th>Day Charge</th>
+                <th>Eve Mins</th>
+                <th>Night Mins</th>
+                <th>Intl Mins</th>
+                <th>Service Calls</th>
+                <th>Churn Outcome</th>
+              </tr>
+            </thead>
+            <tbody id="dataset-tbody">
+              <!-- Dynamically populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox-modal">
+    <span class="close-lightbox">&times;</span>
+    <img id="lightbox-img" src="" alt="Expanded View">
+    <div id="lightbox-caption"></div>
+  </div>
+
+  <footer class="app-footer">
+    <p>Supervised Classification Project · Customer Churn Model Evaluation · Scikit-Learn 1.6 & Python 3.13</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

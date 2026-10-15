@@ -1,0 +1,5 @@
+Algorithm,Accuracy,Precision,Recall,F1-Score,ROC-AUC,PR-AUC
+Logistic Regression,0.786,0.3728,0.7589,0.5,0.8346,0.4916
+Random Forest,0.976,0.9835,0.844,0.9084,0.9267,0.8997
+Gradient Boosting,0.974,0.9528,0.8582,0.903,0.9255,0.8982
+Support Vector Machine,0.908,0.6485,0.7589,0.6993,0.9064,0.789
